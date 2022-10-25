@@ -1,7 +1,41 @@
-// import { useContext } from 'react';
-// import RecipesContext from '../context/RecipesContext';
+import { useContext } from 'react';
+import PropTypes from 'prop-types';
+import RecipesContext from '../context/RecipesContext';
 
-function Login() {
+function Login(props) {
+  const { email,
+    password,
+    disabled,
+    setEmail,
+    setPassword,
+    setDisabled,
+  } = useContext(RecipesContext);
+
+  const loginValidation = () => {
+    const emailValidation = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
+    const MIN_LENGTH_PASSWORD = 6;
+    if (emailValidation && password.length >= MIN_LENGTH_PASSWORD) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  };
+
+  const handleChange = ({ target: { name, value } }) => {
+    if (name === 'email') {
+      setEmail(value);
+    } else {
+      setPassword(value);
+    }
+    loginValidation();
+  };
+
+  const onClick = () => {
+    localStorage.setItem('user', JSON.stringify({ email }));
+    const { history } = props;
+    history.push('/meals');
+  };
+
   return (
     <div>
       <h1>Login</h1>
@@ -10,9 +44,9 @@ function Login() {
           Email:
           <input
             type="email"
-            name="email-input"
+            name="email"
             data-testid="email-input"
-            onChange={ () => { } }
+            onChange={ handleChange }
             value={ email }
             placeholder="Digite seu email"
           />
@@ -21,19 +55,19 @@ function Login() {
           Senha:
           <input
             type="password"
-            name="password-input"
+            name="password"
             data-testid="password-input"
-            onChange={ () => { } }
+            onChange={ handleChange }
             value={ password }
             placeholder="Digite sua senha"
           />
         </label>
         <button
-          type="submit"
+          type="button"
           name="login-submit-btn"
           data-testid="login-submit-btn"
-          onClick={ () => { } }
-          disabled={ () => { } }
+          onClick={ onClick }
+          disabled={ disabled }
         >
           Enter
         </button>
@@ -41,5 +75,11 @@ function Login() {
     </div>
   );
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Login;

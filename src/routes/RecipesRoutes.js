@@ -6,7 +6,7 @@ function RecipesRoutes() {
   return (
     <Switch>
       <Route exact path="/" component={ Login } />
-      <Route exact path="/meals" component={ Meals } />
+      {/* <Route exact path="/meals" component={ Meals } />
       <Route exact path="/drinks" component={ Drinks } />
       <Route exact path="/meals/:id" component={ receitaComida } />
       <Route exact path="/drinks/:id" component={ receitaBebida } />
@@ -14,7 +14,7 @@ function RecipesRoutes() {
       <Route exact path="/drinks/:id/in-progress" component={ pBebi } />
       <Route exact path="/profile" component={ Profile } />
       <Route exact path="/done-recipes" component={ done } />
-      <Route exact path="/favorite-recipes" component={ Favorite } />
+      <Route exact path="/favorite-recipes" component={ Favorite } /> */}
     </Switch>
   );
 }
