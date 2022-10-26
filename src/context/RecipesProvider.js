@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import RecipesContext from './RecipesContext';
 
@@ -7,24 +7,44 @@ function RecipesProvider({ children }) {
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [search, setSearch] = useState('');
+  const [radio, setRadio] = useState('');
+  const [api, setApi] = useState({});
 
-  /* const callApi = async () => {
-    const endPoint = 'URL';
-    const response = await fetch(endPoint);
-    const { results } = await response.json();
-    console.log(results);
-  }; */
+  const apiMeals = useCallback(async () => {
+    const namePoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`;
+    const ingredientePoint = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`;
+    const firstLetterPoint = `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`;
+    if (radio === 'ingredient') {
+      const response = await fetch(ingredientePoint);
+      const resposta = await response.json();
+      setApi(resposta.meals);
+    } if (radio === 'name') {
+      const response = await fetch(namePoint);
+      const resposta = await response.json();
+      setApi(resposta.meals);
+    } if (radio === 'first-letter' && search.length === 1) {
+      const response = await fetch(firstLetterPoint);
+      const resposta = await response.json();
+      setApi(resposta.meals);
+    } if (radio === 'first-letter' && search.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    }
+  }, [radio, search]);
 
   const state = useMemo(() => ({
     email,
     password,
     disabled,
     search,
+    radio,
+    api,
     setEmail,
     setPassword,
     setDisabled,
     setSearch,
-  }), [email, password, disabled, search]);
+    apiMeals,
+    setRadio,
+  }), [email, password, disabled, search, radio, api, apiMeals]);
 
   return (
     <RecipesContext.Provider value={ state }>
