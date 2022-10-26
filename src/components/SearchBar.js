@@ -1,15 +1,21 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 
 function SearchBar() {
-  const { setRadio, apiMeals } = useContext(RecipesContext);
+  const history = useHistory();
+  const path = history.location.pathname;
+  const { setRadio, apiMeals, apiDrinks } = useContext(RecipesContext);
 
   const handleChange = ({ target }) => {
     setRadio(target.value);
   };
 
-  const onClick = () => {
+  const onClickMeals = () => {
     apiMeals();
+  };
+  const onClickDrinks = () => {
+    apiDrinks();
   };
 
   return (
@@ -48,7 +54,7 @@ function SearchBar() {
         type="button"
         name="exec-search-btn"
         data-testid="exec-search-btn"
-        onClick={ onClick }
+        onClick={ path === '/meals' ? onClickMeals : onClickDrinks }
       >
         Search
       </button>
