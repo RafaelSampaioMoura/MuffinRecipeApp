@@ -1,8 +1,10 @@
 import { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import RecipesContext from '../context/RecipesContext';
 
-function Login(props) {
+function Login() {
+  const history = useHistory();
   const { email,
     password,
     disabled,
@@ -32,7 +34,6 @@ function Login(props) {
 
   const onClick = () => {
     localStorage.setItem('user', JSON.stringify({ email }));
-    const { history } = props;
     history.push('/meals');
   };
 
