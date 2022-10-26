@@ -6,14 +6,17 @@ function RecipesProvider({ children }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);
+  const [search, setSearch] = useState('');
   const state = useMemo(() => ({
     email,
     password,
     disabled,
+    search,
     setEmail,
     setPassword,
     setDisabled,
-  }), [email, password, disabled]);
+    setSearch,
+  }), [email, password, disabled, search]);
 
   return (
     <RecipesContext.Provider value={ state }>
