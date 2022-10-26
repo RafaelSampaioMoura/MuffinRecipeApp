@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 import profileIcon from '../images/profileIcon.svg';
@@ -21,7 +21,7 @@ export default function Header() {
   const [title, setTitle] = useState('');
   const [btn, setBtn] = useState(false);
 
-  const pathTitle = () => {
+  const pathTitle = useCallback(() => {
     if (path === '/meals') {
       setTitle('Meals');
     } if (path === '/drinks') {
@@ -33,11 +33,11 @@ export default function Header() {
     } if (path === '/favorite-recipes') {
       setTitle('Favorite Recipes');
     }
-  };
+  }, [path]);
 
   useEffect(() => {
     pathTitle();
-  }, []);
+  }, [pathTitle]);
 
   const onClickProfile = () => {
     history.push('/profile');
