@@ -7,6 +7,14 @@ function RecipesProvider({ children }) {
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [search, setSearch] = useState('');
+
+  /* const callApi = async () => {
+    const endPoint = 'URL';
+    const response = await fetch(endPoint);
+    const { results } = await response.json();
+    console.log(results);
+  }; */
+
   const state = useMemo(() => ({
     email,
     password,
