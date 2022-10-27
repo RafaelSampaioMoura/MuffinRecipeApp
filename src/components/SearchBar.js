@@ -107,9 +107,9 @@ function SearchBar() {
   };
 
   const handleRecipeCards = (mealArr) => {
-    const maxLength = 12;
-    if (mealArr.length > maxLength) {
-      const firstTwelveElements = mealArr.slice(0, maxLength);
+    const maxRecipes = 12;
+    if (mealArr.length > maxRecipes) {
+      const firstTwelveElements = mealArr.slice(0, maxRecipes);
       setCardRender([...firstTwelveElements]);
     }
 
