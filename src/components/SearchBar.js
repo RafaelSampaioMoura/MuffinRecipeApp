@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import RecipesContext from '../context/RecipesContext';
-import RecipeCard from './RecipeCard';
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import RecipesContext from "../context/RecipesContext";
+import RecipeCard from "./RecipeCard";
 
 function SearchBar() {
-  const first = 'first-letter';
+  const first = "first-letter";
   const history = useHistory();
   const path = history.location.pathname;
   const [cardRender, setCardRender] = React.useState([]);
@@ -33,13 +33,17 @@ function SearchBar() {
       const allElements = mealArr.slice();
       setCardRender([...allElements]);
     }
+
+    if (mealArr.length === 0) {
+      global.alert("Sorry, we haven't found any recipes for these filters.");
+    }
   };
 
   const apiMeals = async () => {
     const namePoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`;
     const ingredientePoint = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`;
     const firstLetterPoint = `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`;
-    if (radio === 'ingredient') {
+    if (radio === "ingredient") {
       const response = await fetch(ingredientePoint);
       const resposta = await response.json();
       if (resposta.meals.length === 1) {
@@ -51,7 +55,7 @@ function SearchBar() {
       setIdMeals(arrayIds);
       console.log(arrayIds);
     }
-    if (radio === 'name') {
+    if (radio === "name") {
       const response = await fetch(namePoint);
       const resposta = await response.json();
       console.log(resposta.meals[0].idMeal);
@@ -75,16 +79,16 @@ function SearchBar() {
       setIdMeals(arrayIds);
     }
     if (radio === first && search.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
+      global.alert("Your search must have only 1 (one) character");
     }
-    console.log('comidas');
+    console.log("comidas");
   };
 
   const apiDrinks = async () => {
     const namePoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`;
     const ingredientePoint = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${search}`;
     const firstLetterPoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${search}`;
-    if (radio === 'ingredient') {
+    if (radio === "ingredient") {
       const response = await fetch(ingredientePoint);
       const resposta = await response.json();
       if (resposta.drinks.length === 1) {
@@ -95,7 +99,7 @@ function SearchBar() {
       const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
       setIdDrinks(arrayIds);
     }
-    if (radio === 'name') {
+    if (radio === "name") {
       const response = await fetch(namePoint);
       const resposta = await response.json();
       if (resposta.drinks.length === 1) {
@@ -118,9 +122,9 @@ function SearchBar() {
       setIdDrinks(arrayIds);
     }
     if (radio === first && search.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
+      global.alert("Your search must have only 1 (one) character");
     }
-    console.log('bebidas');
+    console.log("bebidas");
   };
 
   const onClickMeals = () => {
@@ -139,7 +143,7 @@ function SearchBar() {
           name="escolha"
           value="ingredient"
           data-testid="ingredient-search-radio"
-          onChange={ handleChange }
+          onChange={handleChange}
         />
         Ingredient
       </label>
@@ -149,7 +153,7 @@ function SearchBar() {
           name="escolha"
           value="name"
           data-testid="name-search-radio"
-          onChange={ handleChange }
+          onChange={handleChange}
         />
         Name
       </label>
@@ -159,7 +163,7 @@ function SearchBar() {
           name="escolha"
           value="first-letter"
           data-testid="first-letter-search-radio"
-          onChange={ handleChange }
+          onChange={handleChange}
         />
         First letter
       </label>
@@ -167,18 +171,20 @@ function SearchBar() {
         type="button"
         name="exec-search-btn"
         data-testid="exec-search-btn"
-        onClick={ path === '/meals' ? onClickMeals : onClickDrinks }
+        onClick={path === "/meals" ? onClickMeals : onClickDrinks}
       >
         Search
       </button>
-      {path === '/meals' && cardRender.length > 0 ? (
-        cardRender.map((card, index) => (
-          <RecipeCard card={ card } index={ index } key={ card.idMeal } />))
-      ) : null}
-      {path === '/drinks' && cardRender.length > 0 ? (
-        cardRender.map((card, index) => (
-          <RecipeCard card={ card } index={ index } key={ card.idDrink } />))
-      ) : null}
+      {path === "/meals" && cardRender.length > 0
+        ? cardRender.map((card, index) => (
+            <RecipeCard card={card} index={index} key={card.idMeal} />
+          ))
+        : null}
+      {path === "/drinks" && cardRender.length > 0
+        ? cardRender.map((card, index) => (
+            <RecipeCard card={card} index={index} key={card.idDrink} />
+          ))
+        : null}
     </div>
   );
 }
