@@ -3,19 +3,110 @@ import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 
 function SearchBar() {
+  const first = 'first-letter';
   const history = useHistory();
   const path = history.location.pathname;
-  const { setRadio, apiMeals, apiDrinks } = useContext(RecipesContext);
+  const { setRadio,
+    setApiDrinks,
+    setIdDrinks,
+    setApiMeals,
+    setIdMeals,
+    search,
+    radio,
+  } = useContext(RecipesContext);
 
   const handleChange = ({ target }) => {
     setRadio(target.value);
   };
 
+  const apiMeals = async () => {
+    const namePoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`;
+    const ingredientePoint = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`;
+    const firstLetterPoint = `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`;
+    if (radio === 'ingredient') {
+      const response = await fetch(ingredientePoint);
+      const resposta = await response.json();
+      if (resposta.meals.length === 1) {
+        history.push(`/meals/${resposta.meals[0].idMeal}`);
+      }
+      setApiMeals(resposta.meals);
+      const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
+      setIdMeals(arrayIds);
+      console.log(arrayIds);
+    } if (radio === 'name') {
+      const response = await fetch(namePoint);
+      const resposta = await response.json();
+      console.log(resposta.meals[0].idMeal);
+      if (resposta.meals.length === 1) {
+        history.push(`/meals/${resposta.meals[0].idMeal}`);
+      }
+      console.log(resposta.meals);
+      setApiMeals(resposta.meals);
+      const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
+      setIdMeals(arrayIds);
+    } if (radio === first && search.length === 1) {
+      const response = await fetch(firstLetterPoint);
+      const resposta = await response.json();
+      if (resposta.meals.length === 1) {
+        history.push(`/meals/${resposta.meals[0].idMeal}`);
+      }
+      setApiMeals(resposta.meals);
+      const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
+      setIdMeals(arrayIds);
+    } if (radio === first && search.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    }
+    console.log('comidas');
+  };
+
+  const apiDrinks = async () => {
+    const namePoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`;
+    const ingredientePoint = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${search}`;
+    const firstLetterPoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${search}`;
+    if (radio === 'ingredient') {
+      const response = await fetch(ingredientePoint);
+      const resposta = await response.json();
+      if (resposta.drinks.length === 1) {
+        history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+      }
+      setApiDrinks(resposta.drinks);
+      const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
+      setIdDrinks(arrayIds);
+    } if (radio === 'name') {
+      const response = await fetch(namePoint);
+      const resposta = await response.json();
+      if (resposta.drinks.length === 1) {
+        history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+      }
+      setApiDrinks(resposta.drinks);
+      const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
+      setIdDrinks(arrayIds);
+    } if (radio === first && search.length === 1) {
+      const response = await fetch(firstLetterPoint);
+      const resposta = await response.json();
+      if (resposta.drinks.length === 1) {
+        history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+      }
+      setApiDrinks(resposta.drinks);
+      const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
+      setIdDrinks(arrayIds);
+    } if (radio === first && search.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    }
+    console.log('bebidas');
+  };
+
   const onClickMeals = () => {
     apiMeals();
+    /* if (idMeals.length === 1) {
+      history.push(`/meals/${idMeals}`);
+    } */
   };
   const onClickDrinks = () => {
     apiDrinks();
+    /* if (idDrinks.length === 1) {
+      history.push(`/drinks/${idDrinks}`);
+    } */
   };
 
   return (
