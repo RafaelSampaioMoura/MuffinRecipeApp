@@ -14,13 +14,25 @@ function SearchBar() {
     setIdDrinks,
     setApiMeals,
     setIdMeals,
-    apiMealss,
     search,
     radio,
   } = useContext(RecipesContext);
 
   const handleChange = ({ target }) => {
     setRadio(target.value);
+  };
+
+  const handleRecipeCards = (mealArr) => {
+    const maxRecipes = 12;
+    if (mealArr.length > maxRecipes) {
+      const firstTwelveElements = mealArr.slice(0, maxRecipes);
+      setCardRender([...firstTwelveElements]);
+    }
+
+    if (mealArr.length < maxRecipes && mealArr.length > 1) {
+      const allElements = mealArr.slice();
+      setCardRender([...allElements]);
+    }
   };
 
   const apiMeals = async () => {
@@ -33,6 +45,7 @@ function SearchBar() {
       if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
       }
+      handleRecipeCards(resposta.meals);
       setApiMeals(resposta.meals);
       const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
       setIdMeals(arrayIds);
@@ -45,7 +58,7 @@ function SearchBar() {
       if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
       }
-      console.log(resposta.meals);
+      handleRecipeCards(resposta.meals);
       setApiMeals(resposta.meals);
       const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
       setIdMeals(arrayIds);
@@ -56,6 +69,7 @@ function SearchBar() {
       if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
       }
+      handleRecipeCards(resposta.meals);
       setApiMeals(resposta.meals);
       const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
       setIdMeals(arrayIds);
@@ -76,6 +90,7 @@ function SearchBar() {
       if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
       }
+      handleRecipeCards(resposta.drinks);
       setApiDrinks(resposta.drinks);
       const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
       setIdDrinks(arrayIds);
@@ -86,6 +101,7 @@ function SearchBar() {
       if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
       }
+      handleRecipeCards(resposta.drinks);
       setApiDrinks(resposta.drinks);
       const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
       setIdDrinks(arrayIds);
@@ -96,6 +112,7 @@ function SearchBar() {
       if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
       }
+      handleRecipeCards(resposta.drinks);
       setApiDrinks(resposta.drinks);
       const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
       setIdDrinks(arrayIds);
@@ -106,22 +123,9 @@ function SearchBar() {
     console.log('bebidas');
   };
 
-  const handleRecipeCards = (mealArr) => {
-    const maxRecipes = 12;
-    if (mealArr.length > maxRecipes) {
-      const firstTwelveElements = mealArr.slice(0, maxRecipes);
-      setCardRender([...firstTwelveElements]);
-    }
-
-    if (mealArr.length < maxLength && mealArr.length > 1) {
-      const allElements = mealArr.slice();
-      setCardRender([...allElements]);
-    }
-  };
-
   const onClickMeals = () => {
     apiMeals();
-    handleRecipeCards(apiMealss);
+    // handleRecipeCards(apiMealss);
   };
   const onClickDrinks = () => {
     apiDrinks();
@@ -167,11 +171,14 @@ function SearchBar() {
       >
         Search
       </button>
-      {cardRender.length > 0 ? (
-        cardRender.map((card) => <RecipeCard card={ card } key={ card.idMeal } />)
-      ) : (
-        <div>Nothing searched</div>
-      )}
+      {path === '/meals' && cardRender.length > 0 ? (
+        cardRender.map((card, index) => (
+          <RecipeCard card={ card } index={ index } key={ card.idMeal } />))
+      ) : null}
+      {path === '/drinks' && cardRender.length > 0 ? (
+        cardRender.map((card, index) => (
+          <RecipeCard card={ card } index={ index } key={ card.idDrink } />))
+      ) : null}
     </div>
   );
 }
