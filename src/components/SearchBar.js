@@ -11,6 +11,7 @@ function SearchBar() {
     setIdDrinks,
     setApiMeals,
     setIdMeals,
+    apiMealss,
     search,
     radio,
   } = useContext(RecipesContext);
@@ -96,17 +97,24 @@ function SearchBar() {
     console.log('bebidas');
   };
 
+  const handleRecipeCards = (mealArr) => {
+    if (mealArr.length > 12) {
+      const firstTwelveElements = mealArr.slice(0, 12);
+      setCardRender([...firstTwelveElements]);
+    }
+
+    if (mealArr.length < 12 && mealArr.length > 1) {
+      const allElements = mealArr.slice();
+      setCardRender([...allElements]);
+    }
+  };
+
   const onClickMeals = () => {
     apiMeals();
-    /* if (idMeals.length === 1) {
-      history.push(`/meals/${idMeals}`);
-    } */
+    handleRecipeCards(apiMealss);
   };
   const onClickDrinks = () => {
     apiDrinks();
-    /* if (idDrinks.length === 1) {
-      history.push(`/drinks/${idDrinks}`);
-    } */
   };
 
   return (
