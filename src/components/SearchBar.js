@@ -24,6 +24,7 @@ function SearchBar() {
 
   const handleRecipeCards = (mealArr) => {
     const maxRecipes = 12;
+
     if (mealArr.length > maxRecipes) {
       const firstTwelveElements = mealArr.slice(0, maxRecipes);
       setCardRender([...firstTwelveElements]);
@@ -32,10 +33,6 @@ function SearchBar() {
     if (mealArr.length < maxRecipes && mealArr.length > 1) {
       const allElements = mealArr.slice();
       setCardRender([...allElements]);
-    }
-
-    if (mealArr.length === 0) {
-      global.alert("Sorry, we haven't found any recipes for these filters.");
     }
   };
 
@@ -46,37 +43,38 @@ function SearchBar() {
     if (radio === "ingredient") {
       const response = await fetch(ingredientePoint);
       const resposta = await response.json();
-      if (resposta.meals.length === 1) {
+      if (resposta.meals === null) {
+        global.alert("Sorry, we haven't found any recipes for these filters.");
+      } else if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
+      } else {
+        handleRecipeCards(resposta.meals);
+        setApiMeals(resposta.meals);
       }
-      handleRecipeCards(resposta.meals);
-      setApiMeals(resposta.meals);
-      const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
-      setIdMeals(arrayIds);
-      console.log(arrayIds);
     }
     if (radio === "name") {
       const response = await fetch(namePoint);
       const resposta = await response.json();
-      console.log(resposta.meals[0].idMeal);
-      if (resposta.meals.length === 1) {
+      if (resposta.meals === null) {
+        global.alert("Sorry, we haven't found any recipes for these filters.");
+      } else if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
+      } else {
+        handleRecipeCards(resposta.meals);
+        setApiMeals(resposta.meals);
       }
-      handleRecipeCards(resposta.meals);
-      setApiMeals(resposta.meals);
-      const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
-      setIdMeals(arrayIds);
     }
     if (radio === first && search.length === 1) {
       const response = await fetch(firstLetterPoint);
       const resposta = await response.json();
-      if (resposta.meals.length === 1) {
+      if (resposta.meals === null) {
+        global.alert("Sorry, we haven't found any recipes for these filters.");
+      } else if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
+      } else {
+        handleRecipeCards(resposta.meals);
+        setApiMeals(resposta.meals);
       }
-      handleRecipeCards(resposta.meals);
-      setApiMeals(resposta.meals);
-      const arrayIds = await resposta.meals.map((elemento) => elemento.idMeal);
-      setIdMeals(arrayIds);
     }
     if (radio === first && search.length > 1) {
       global.alert("Your search must have only 1 (one) character");
@@ -91,35 +89,38 @@ function SearchBar() {
     if (radio === "ingredient") {
       const response = await fetch(ingredientePoint);
       const resposta = await response.json();
-      if (resposta.drinks.length === 1) {
+      if (resposta.drinks === null) {
+        global.alert("Sorry, we haven't found any recipes for these filters.");
+      } else if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+      } else {
+        handleRecipeCards(resposta.drinks);
+        setApiDrinks(resposta.drinks);
       }
-      handleRecipeCards(resposta.drinks);
-      setApiDrinks(resposta.drinks);
-      const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
-      setIdDrinks(arrayIds);
     }
     if (radio === "name") {
       const response = await fetch(namePoint);
       const resposta = await response.json();
-      if (resposta.drinks.length === 1) {
+      if (resposta.drinks === null) {
+        global.alert("Sorry, we haven't found any recipes for these filters.");
+      } else if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+      } else {
+        handleRecipeCards(resposta.drinks);
+        setApiDrinks(resposta.drinks);
       }
-      handleRecipeCards(resposta.drinks);
-      setApiDrinks(resposta.drinks);
-      const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
-      setIdDrinks(arrayIds);
     }
     if (radio === first && search.length === 1) {
       const response = await fetch(firstLetterPoint);
       const resposta = await response.json();
-      if (resposta.drinks.length === 1) {
+      if (resposta.drinks === null) {
+        global.alert("Sorry, we haven't found any recipes for these filters.");
+      } else if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+      } else {
+        handleRecipeCards(resposta.drinks);
+        setApiDrinks(resposta.drinks);
       }
-      handleRecipeCards(resposta.drinks);
-      setApiDrinks(resposta.drinks);
-      const arrayIds = resposta.drinks.map((elemento) => elemento.idDrink);
-      setIdDrinks(arrayIds);
     }
     if (radio === first && search.length > 1) {
       global.alert("Your search must have only 1 (one) character");
