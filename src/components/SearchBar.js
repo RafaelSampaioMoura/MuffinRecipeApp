@@ -157,6 +157,13 @@ function SearchBar() {
       >
         Search
       </button>
+      {cardRender.length > 0 ? (
+        cardRender.map((card) => {
+          return <RecipeCards card={card} key={card.idMeal}></RecipeCards>;
+        })
+      ) : (
+        <div>Nothing searched</div>
+      )}
     </div>
   );
 }
