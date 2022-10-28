@@ -143,7 +143,6 @@ function SearchBar() {
       handleRecipeCards(resposta.drinks);
       setApiDrinks(resposta.drinks);
     }
-  };
 
   const apiDrinks = async () => {
     if (radio === 'ingredient') {
@@ -157,6 +156,18 @@ function SearchBar() {
     }
     firstMaiorQueUm();
   };
+
+  React.useEffect(() => {
+    const handleFirstRender = () => {
+    if (path === "/meals") {
+      apiMeals();
+    }
+    if (path === "/drinks") {
+      apiDrinks();
+    }
+    }
+    handleFirstRender();
+  }, [])
 
   const onClickMeals = () => {
     apiMeals();
