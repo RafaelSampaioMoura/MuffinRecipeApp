@@ -1,19 +1,18 @@
-import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
-import RecipesContext from "../context/RecipesContext";
-import RecipeCard from "./RecipeCard";
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import RecipesContext from '../context/RecipesContext';
+import RecipeCard from './RecipeCard';
 
 function SearchBar() {
-  const first = "first-letter";
+  const mensagem = 'Sorry, we haven\'t found any recipes for these filters.';
+  const first = 'first-letter';
   const history = useHistory();
   const path = history.location.pathname;
   const [cardRender, setCardRender] = React.useState([]);
   const {
     setRadio,
     setApiDrinks,
-    setIdDrinks,
     setApiMeals,
-    setIdMeals,
     search,
     radio,
   } = useContext(RecipesContext);
@@ -36,15 +35,31 @@ function SearchBar() {
     }
   };
 
+  const firstMaiorQueUm = () => {
+    if (radio === first && search.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    }
+  };
+
+  const endPoints = {
+    endMeals: {
+      namePoint: `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`,
+      ingredientePoint: `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`,
+      firstLetterPoint: `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`,
+    },
+    endDrinks: {
+      namePoint: `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`,
+      ingredientePoint: `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${search}`,
+      firstLetterPoint: `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${search}`,
+    },
+  };
+
   const apiMeals = async () => {
-    const namePoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`;
-    const ingredientePoint = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`;
-    const firstLetterPoint = `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`;
-    if (radio === "ingredient") {
-      const response = await fetch(ingredientePoint);
+    if (radio === 'ingredient') {
+      const response = await fetch(endPoints.endMeals.ingredientePoint);
       const resposta = await response.json();
       if (resposta.meals === null) {
-        global.alert("Sorry, we haven't found any recipes for these filters.");
+        global.alert(mensagem);
       } else if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
       } else {
@@ -52,11 +67,11 @@ function SearchBar() {
         setApiMeals(resposta.meals);
       }
     }
-    if (radio === "name") {
-      const response = await fetch(namePoint);
+    if (radio === 'name') {
+      const response = await fetch(endPoints.endMeals.namePoint);
       const resposta = await response.json();
       if (resposta.meals === null) {
-        global.alert("Sorry, we haven't found any recipes for these filters.");
+        global.alert(mensagem);
       } else if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
       } else {
@@ -65,10 +80,10 @@ function SearchBar() {
       }
     }
     if (radio === first && search.length === 1) {
-      const response = await fetch(firstLetterPoint);
+      const response = await fetch(endPoints.endMeals.firstLetterPoint);
       const resposta = await response.json();
       if (resposta.meals === null) {
-        global.alert("Sorry, we haven't found any recipes for these filters.");
+        global.alert(mensagem);
       } else if (resposta.meals.length === 1) {
         history.push(`/meals/${resposta.meals[0].idMeal}`);
       } else {
@@ -76,21 +91,15 @@ function SearchBar() {
         setApiMeals(resposta.meals);
       }
     }
-    if (radio === first && search.length > 1) {
-      global.alert("Your search must have only 1 (one) character");
-    }
-    console.log("comidas");
+    firstMaiorQueUm();
   };
 
   const apiDrinks = async () => {
-    const namePoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`;
-    const ingredientePoint = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${search}`;
-    const firstLetterPoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${search}`;
-    if (radio === "ingredient") {
-      const response = await fetch(ingredientePoint);
+    if (radio === 'ingredient') {
+      const response = await fetch(endPoints.endDrinks.ingredientePoint);
       const resposta = await response.json();
       if (resposta.drinks === null) {
-        global.alert("Sorry, we haven't found any recipes for these filters.");
+        global.alert(mensagem);
       } else if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
       } else {
@@ -98,11 +107,11 @@ function SearchBar() {
         setApiDrinks(resposta.drinks);
       }
     }
-    if (radio === "name") {
-      const response = await fetch(namePoint);
+    if (radio === 'name') {
+      const response = await fetch(endPoints.endDrinks.namePoint);
       const resposta = await response.json();
       if (resposta.drinks === null) {
-        global.alert("Sorry, we haven't found any recipes for these filters.");
+        global.alert(mensagem);
       } else if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
       } else {
@@ -111,10 +120,10 @@ function SearchBar() {
       }
     }
     if (radio === first && search.length === 1) {
-      const response = await fetch(firstLetterPoint);
+      const response = await fetch(endPoints.endDrinks.firstLetterPoint);
       const resposta = await response.json();
       if (resposta.drinks === null) {
-        global.alert("Sorry, we haven't found any recipes for these filters.");
+        global.alert(mensagem);
       } else if (resposta.drinks.length === 1) {
         history.push(`/drinks/${resposta.drinks[0].idDrink}`);
       } else {
@@ -122,10 +131,7 @@ function SearchBar() {
         setApiDrinks(resposta.drinks);
       }
     }
-    if (radio === first && search.length > 1) {
-      global.alert("Your search must have only 1 (one) character");
-    }
-    console.log("bebidas");
+    firstMaiorQueUm();
   };
 
   const onClickMeals = () => {
@@ -144,7 +150,7 @@ function SearchBar() {
           name="escolha"
           value="ingredient"
           data-testid="ingredient-search-radio"
-          onChange={handleChange}
+          onChange={ handleChange }
         />
         Ingredient
       </label>
@@ -154,7 +160,7 @@ function SearchBar() {
           name="escolha"
           value="name"
           data-testid="name-search-radio"
-          onChange={handleChange}
+          onChange={ handleChange }
         />
         Name
       </label>
@@ -164,7 +170,7 @@ function SearchBar() {
           name="escolha"
           value="first-letter"
           data-testid="first-letter-search-radio"
-          onChange={handleChange}
+          onChange={ handleChange }
         />
         First letter
       </label>
@@ -172,19 +178,19 @@ function SearchBar() {
         type="button"
         name="exec-search-btn"
         data-testid="exec-search-btn"
-        onClick={path === "/meals" ? onClickMeals : onClickDrinks}
+        onClick={ path === '/meals' ? onClickMeals : onClickDrinks }
       >
         Search
       </button>
-      {path === "/meals" && cardRender.length > 0
+      {path === '/meals' && cardRender.length > 0
         ? cardRender.map((card, index) => (
-            <RecipeCard card={card} index={index} key={card.idMeal} />
-          ))
+          <RecipeCard card={ card } index={ index } key={ card.idMeal } />
+        ))
         : null}
-      {path === "/drinks" && cardRender.length > 0
+      {path === '/drinks' && cardRender.length > 0
         ? cardRender.map((card, index) => (
-            <RecipeCard card={card} index={index} key={card.idDrink} />
-          ))
+          <RecipeCard card={ card } index={ index } key={ card.idDrink } />
+        ))
         : null}
     </div>
   );
