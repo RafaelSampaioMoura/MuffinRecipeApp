@@ -12,6 +12,7 @@ function RecipesProvider({ children }) {
   const [apiDrinkss, setApiDrinks] = useState([]);
   const [idMeals, setIdMeals] = useState([]);
   const [idDrinks, setIdDrinks] = useState([]);
+  const [cardRender, setCardRender] = React.useState([]);
 
   const state = useMemo(() => ({
     email,
@@ -23,6 +24,7 @@ function RecipesProvider({ children }) {
     apiDrinkss,
     idMeals,
     idDrinks,
+    cardRender,
     setEmail,
     setPassword,
     setDisabled,
@@ -32,6 +34,7 @@ function RecipesProvider({ children }) {
     setIdDrinks,
     setApiMeals,
     setApiDrinks,
+    setCardRender,
   }), [email,
     password,
     disabled,
@@ -41,6 +44,7 @@ function RecipesProvider({ children }) {
     apiDrinkss,
     idMeals,
     idDrinks,
+    cardRender,
   ]);
 
   return (

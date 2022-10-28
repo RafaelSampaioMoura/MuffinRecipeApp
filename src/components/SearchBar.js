@@ -8,39 +8,30 @@ function SearchBar() {
   const first = 'first-letter';
   const history = useHistory();
   const path = history.location.pathname;
-  const [cardRender, setCardRender] = React.useState([]);
-  const {
-    setRadio,
-    setApiDrinks,
-    setApiMeals,
-    search,
-    radio,
-  } = useContext(RecipesContext);
-
+  const { setRadio,
+    setApiDrinks, setApiMeals,
+    search, radio,
+    cardRender,
+    setCardRender } = useContext(RecipesContext);
   const handleChange = ({ target }) => {
     setRadio(target.value);
   };
-
   const handleRecipeCards = (mealArr) => {
     const maxRecipes = 12;
-
     if (mealArr.length > maxRecipes) {
       const firstTwelveElements = mealArr.slice(0, maxRecipes);
       setCardRender([...firstTwelveElements]);
     }
-
     if (mealArr.length < maxRecipes && mealArr.length > 1) {
       const allElements = mealArr.slice();
       setCardRender([...allElements]);
     }
   };
-
   const firstMaiorQueUm = () => {
     if (radio === first && search.length > 1) {
       global.alert('Your search must have only 1 (one) character');
     }
   };
-
   const endPoints = {
     endMeals: {
       namePoint: `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`,
@@ -53,7 +44,6 @@ function SearchBar() {
       firstLetterPoint: `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${search}`,
     },
   };
-
   const callIngredientMeal = async () => {
     const response = await fetch(endPoints.endMeals.ingredientePoint);
     const resposta = await response.json();
@@ -66,7 +56,6 @@ function SearchBar() {
       setApiMeals(resposta.meals);
     }
   };
-
   const callNameMeal = async () => {
     const response = await fetch(endPoints.endMeals.namePoint);
     const resposta = await response.json();
@@ -79,7 +68,6 @@ function SearchBar() {
       setApiMeals(resposta.meals);
     }
   };
-
   const callSingleMeal = async () => {
     const response = await fetch(endPoints.endMeals.firstLetterPoint);
     const resposta = await response.json();
@@ -92,7 +80,20 @@ function SearchBar() {
       setApiMeals(resposta.meals);
     }
   };
-
+  const callAllMeals = async () => {
+    const response = await fetch(
+      'https://www.themealdb.com/api/json/v1/1/search.php?s=',
+    );
+    const resposta = await response.json();
+    if (resposta.meals === null) {
+      global.alert(mensagem);
+    } else {
+      handleRecipeCards(resposta.meals);
+      setApiMeals(resposta.meals);
+      // console.log(firstTwelve);
+      console.log(cardRender);
+    }
+  };
   const apiMeals = async () => {
     if (radio === 'ingredient') {
       callIngredientMeal();
@@ -103,9 +104,11 @@ function SearchBar() {
     if (radio === first && search.length === 1) {
       callSingleMeal();
     }
+    if (!radio) {
+      callAllMeals();
+    }
     firstMaiorQueUm();
   };
-
   const callIngredientDrink = async () => {
     const response = await fetch(endPoints.endDrinks.ingredientePoint);
     const resposta = await response.json();
@@ -118,7 +121,6 @@ function SearchBar() {
       setApiDrinks(resposta.drinks);
     }
   };
-
   const callNameDrink = async () => {
     const response = await fetch(endPoints.endDrinks.namePoint);
     const resposta = await response.json();
@@ -131,7 +133,6 @@ function SearchBar() {
       setApiDrinks(resposta.drinks);
     }
   };
-
   const callSingleDrink = async () => {
     const response = await fetch(endPoints.endDrinks.firstLetterPoint);
     const resposta = await response.json();
@@ -143,7 +144,21 @@ function SearchBar() {
       handleRecipeCards(resposta.drinks);
       setApiDrinks(resposta.drinks);
     }
-
+  };
+  const callAllDrinks = async () => {
+    const response = await fetch(
+      'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+    );
+    const resposta = await response.json();
+    if (resposta.meals === null) {
+      global.alert(mensagem);
+    } else {
+      handleRecipeCards(resposta.drinks);
+      setApiMeals(resposta.drinks);
+      // console.log(firstTwelve);
+      console.log(cardRender);
+    }
+  };
   const apiDrinks = async () => {
     if (radio === 'ingredient') {
       callIngredientDrink();
@@ -154,21 +169,22 @@ function SearchBar() {
     if (radio === first && search.length === 1) {
       callSingleDrink();
     }
+    if (!radio) {
+      callAllDrinks();
+    }
     firstMaiorQueUm();
   };
-
   React.useEffect(() => {
     const handleFirstRender = () => {
-    if (path === "/meals") {
-      apiMeals();
-    }
-    if (path === "/drinks") {
-      apiDrinks();
-    }
-    }
+      if (path === '/meals') {
+        apiMeals();
+      }
+      if (path === '/drinks') {
+        apiDrinks();
+      }
+    };
     handleFirstRender();
-  }, [])
-
+  }, []);
   const onClickMeals = () => {
     apiMeals();
     // handleRecipeCards(apiMealss);
@@ -176,7 +192,6 @@ function SearchBar() {
   const onClickDrinks = () => {
     apiDrinks();
   };
-
   return (
     <div>
       <label htmlFor="ingredient-search-radio">
@@ -230,5 +245,4 @@ function SearchBar() {
     </div>
   );
 }
-
 export default SearchBar;
