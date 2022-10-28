@@ -79,6 +79,14 @@ function SearchBar() {
     if (radio === first && search.length > 1) {
       global.alert("Your search must have only 1 (one) character");
     }
+    if (!radio) {
+      const response = await fetch(
+        "https://www.themealdb.com/api/json/v1/1/search.php?s="
+      );
+      const resposta = await response.json();
+      handleRecipeCards(resposta.meals);
+      setApiMeals(resposta.meals);      
+    }
     console.log("comidas");
   };
 
@@ -125,8 +133,28 @@ function SearchBar() {
     if (radio === first && search.length > 1) {
       global.alert("Your search must have only 1 (one) character");
     }
+    if (!radio) {
+      const response = await fetch(
+        "https://www.thecocktaildb.com/api/json/v1/1/search.php?s="
+      );
+      const resposta = await response.json();
+      handleRecipeCards(resposta.drinks);
+      setApiDrinks(resposta.drinks);      
+    }
     console.log("bebidas");
   };
+
+  React.useEffect(() => {
+    const handleFirstRender = () => {
+    if (path === "/meals") {
+      apiMeals();
+    }
+    if (path === "/drinks") {
+      apiDrinks();
+    }
+    }
+    handleFirstRender();
+  }, [])
 
   const onClickMeals = () => {
     apiMeals();
