@@ -54,82 +54,106 @@ function SearchBar() {
     },
   };
 
+  const callIngredientMeal = async () => {
+    const response = await fetch(endPoints.endMeals.ingredientePoint);
+    const resposta = await response.json();
+    if (resposta.meals === null) {
+      global.alert(mensagem);
+    } else if (resposta.meals.length === 1) {
+      history.push(`/meals/${resposta.meals[0].idMeal}`);
+    } else {
+      handleRecipeCards(resposta.meals);
+      setApiMeals(resposta.meals);
+    }
+  };
+
+  const callNameMeal = async () => {
+    const response = await fetch(endPoints.endMeals.namePoint);
+    const resposta = await response.json();
+    if (resposta.meals === null) {
+      global.alert(mensagem);
+    } else if (resposta.meals.length === 1) {
+      history.push(`/meals/${resposta.meals[0].idMeal}`);
+    } else {
+      handleRecipeCards(resposta.meals);
+      setApiMeals(resposta.meals);
+    }
+  };
+
+  const callSingleMeal = async () => {
+    const response = await fetch(endPoints.endMeals.firstLetterPoint);
+    const resposta = await response.json();
+    if (resposta.meals === null) {
+      global.alert(mensagem);
+    } else if (resposta.meals.length === 1) {
+      history.push(`/meals/${resposta.meals[0].idMeal}`);
+    } else {
+      handleRecipeCards(resposta.meals);
+      setApiMeals(resposta.meals);
+    }
+  };
+
   const apiMeals = async () => {
     if (radio === 'ingredient') {
-      const response = await fetch(endPoints.endMeals.ingredientePoint);
-      const resposta = await response.json();
-      if (resposta.meals === null) {
-        global.alert(mensagem);
-      } else if (resposta.meals.length === 1) {
-        history.push(`/meals/${resposta.meals[0].idMeal}`);
-      } else {
-        handleRecipeCards(resposta.meals);
-        setApiMeals(resposta.meals);
-      }
+      callIngredientMeal();
     }
     if (radio === 'name') {
-      const response = await fetch(endPoints.endMeals.namePoint);
-      const resposta = await response.json();
-      if (resposta.meals === null) {
-        global.alert(mensagem);
-      } else if (resposta.meals.length === 1) {
-        history.push(`/meals/${resposta.meals[0].idMeal}`);
-      } else {
-        handleRecipeCards(resposta.meals);
-        setApiMeals(resposta.meals);
-      }
+      callNameMeal();
     }
     if (radio === first && search.length === 1) {
-      const response = await fetch(endPoints.endMeals.firstLetterPoint);
-      const resposta = await response.json();
-      if (resposta.meals === null) {
-        global.alert(mensagem);
-      } else if (resposta.meals.length === 1) {
-        history.push(`/meals/${resposta.meals[0].idMeal}`);
-      } else {
-        handleRecipeCards(resposta.meals);
-        setApiMeals(resposta.meals);
-      }
+      callSingleMeal();
     }
     firstMaiorQueUm();
   };
 
+  const callIngredientDrink = async () => {
+    const response = await fetch(endPoints.endDrinks.ingredientePoint);
+    const resposta = await response.json();
+    if (resposta.drinks === null) {
+      global.alert(mensagem);
+    } else if (resposta.drinks.length === 1) {
+      history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+    } else {
+      handleRecipeCards(resposta.drinks);
+      setApiDrinks(resposta.drinks);
+    }
+  };
+
+  const callNameDrink = async () => {
+    const response = await fetch(endPoints.endDrinks.namePoint);
+    const resposta = await response.json();
+    if (resposta.drinks === null) {
+      global.alert(mensagem);
+    } else if (resposta.drinks.length === 1) {
+      history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+    } else {
+      handleRecipeCards(resposta.drinks);
+      setApiDrinks(resposta.drinks);
+    }
+  };
+
+  const callSingleDrink = async () => {
+    const response = await fetch(endPoints.endDrinks.firstLetterPoint);
+    const resposta = await response.json();
+    if (resposta.drinks === null) {
+      global.alert(mensagem);
+    } else if (resposta.drinks.length === 1) {
+      history.push(`/drinks/${resposta.drinks[0].idDrink}`);
+    } else {
+      handleRecipeCards(resposta.drinks);
+      setApiDrinks(resposta.drinks);
+    }
+  };
+
   const apiDrinks = async () => {
     if (radio === 'ingredient') {
-      const response = await fetch(endPoints.endDrinks.ingredientePoint);
-      const resposta = await response.json();
-      if (resposta.drinks === null) {
-        global.alert(mensagem);
-      } else if (resposta.drinks.length === 1) {
-        history.push(`/drinks/${resposta.drinks[0].idDrink}`);
-      } else {
-        handleRecipeCards(resposta.drinks);
-        setApiDrinks(resposta.drinks);
-      }
+      callIngredientDrink();
     }
     if (radio === 'name') {
-      const response = await fetch(endPoints.endDrinks.namePoint);
-      const resposta = await response.json();
-      if (resposta.drinks === null) {
-        global.alert(mensagem);
-      } else if (resposta.drinks.length === 1) {
-        history.push(`/drinks/${resposta.drinks[0].idDrink}`);
-      } else {
-        handleRecipeCards(resposta.drinks);
-        setApiDrinks(resposta.drinks);
-      }
+      callNameDrink();
     }
     if (radio === first && search.length === 1) {
-      const response = await fetch(endPoints.endDrinks.firstLetterPoint);
-      const resposta = await response.json();
-      if (resposta.drinks === null) {
-        global.alert(mensagem);
-      } else if (resposta.drinks.length === 1) {
-        history.push(`/drinks/${resposta.drinks[0].idDrink}`);
-      } else {
-        handleRecipeCards(resposta.drinks);
-        setApiDrinks(resposta.drinks);
-      }
+      callSingleDrink();
     }
     firstMaiorQueUm();
   };
